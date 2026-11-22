@@ -50,3 +50,18 @@ clue(8, Solution) :-
     once(member(p(_, Dept, Lang, data), Solution)),
     Dept == research,
     Lang \== javascript.
+
+%! main is det.
+%  Declarative reading: main prints, one line per friend in the order Alex, Ben,
+%  Carla, Dana, the first candidate solution (in the order of candidate_solution/1)
+%  that satisfies clues 1 to 8.
+main :-
+    once(( candidate_solution(Solution),
+           forall(between(1, 8, N), clue(N, Solution)) )),
+    maplist(print_person, Solution).
+
+%! print_person(+Person) is det.
+%  Declarative reading: a line "Name = [Dept, Lang, Project]" is written for
+%  Person = p(Name, Dept, Lang, Project); atoms are written without quotes.
+print_person(p(Name, Dept, Lang, Project)) :-
+    format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project]).
