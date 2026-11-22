@@ -53,3 +53,14 @@
     (if (< (my-length lst) n)
         (cons x processed)
         processed)))
+
+;; (print-insert-result) -> unspecified
+;; Recursive reading: not recursive. Reads x, then lst, then n from standard
+;; input (let* evaluates the three reads in this order), then displays
+;; (insert-if-short x lst n) followed by exactly one newline. Prints nothing else.
+(define (print-insert-result)
+  (let* ((x (read))
+         (lst (read))
+         (n (read)))
+    (display (insert-if-short x lst n))
+    (newline)))
