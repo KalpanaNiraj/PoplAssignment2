@@ -50,14 +50,19 @@ clue(8, Solution) :-
     once(member(p(_, Dept, Lang, data), Solution)),
     Dept == research,
     Lang \== javascript.
+% CLUE 9: The friend who prefers the embedded project works in the design department.
+clue(9, Solution) :-
+    once(member(p(_, Dept, _, embedded), Solution)),
+    Dept == design.
 
 %! main is det.
 %  Declarative reading: main prints, one line per friend in the order Alex, Ben,
 %  Carla, Dana, the first candidate solution (in the order of candidate_solution/1)
-%  that satisfies clues 1 to 8.
+%  that satisfies clues 1 to 9. Every such solution satisfies clues 1 to 8 (P1.a),
+%  and with clue 9 it is the unique solution of the repaired puzzle (P1.c).
 main :-
     once(( candidate_solution(Solution),
-           forall(between(1, 8, N), clue(N, Solution)) )),
+           forall(between(1, 9, N), clue(N, Solution)) )),
     maplist(print_person, Solution).
 
 %! print_person(+Person) is det.
