@@ -19,7 +19,7 @@ candidate_solution([p('Alex',D1,L1,P1), p('Ben',D2,L2,P2),
     permutation(['AI', web, embedded, data], [P1,P2,P3,P4]).
 
 %! clue(+N, +Solution) is semidet.
-%  Declarative reading: clue N (1..8) holds in the fully filled-in Solution.
+%  Declarative reading: clue N (1..9) holds in the fully filled-in Solution.
 clue(1, Solution) :-
     once(member(p(Name, Dept, _, 'AI'), Solution)),
     Dept \== research,
