@@ -71,3 +71,11 @@
 ;; empty list; for () that is ().
 (define (tree-postorder tree)
   (postorder-acc tree '()))
+
+;; (print-inorder tree) -> unspecified (prints)
+;; Recursive reading: not recursive itself; it displays the inorder list of the tree
+;; (computed by the recursive tree-inorder; () for the empty tree) and then prints
+;; exactly one newline. Nothing else is printed.
+(define (print-inorder tree)
+  (display (tree-inorder tree))
+  (newline))
