@@ -79,3 +79,17 @@
 (define (print-inorder tree)
   (display (tree-inorder tree))
   (newline))
+
+;; (print-all-traversals tree) -> unspecified (prints)
+;; Recursive reading: not recursive itself; it displays the inorder list, then the
+;; preorder list, then the postorder list of the tree (each computed by the
+;; recursive tree-inorder, tree-preorder and tree-postorder), each followed by
+;; exactly one newline. Nothing else is printed. For the empty tree it prints
+;; three lines of ().
+(define (print-all-traversals tree)
+  (display (tree-inorder tree))
+  (newline)
+  (display (tree-preorder tree))
+  (newline)
+  (display (tree-postorder tree))
+  (newline))
