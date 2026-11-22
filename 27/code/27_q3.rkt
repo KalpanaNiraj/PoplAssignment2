@@ -103,3 +103,28 @@
       0
       (+ 1 (max (tree-height (node-left tree))
                 (tree-height (node-right tree))))))
+
+;; (leaf? tree) -> boolean
+;; Recursive reading: not recursive; a tree is a leaf iff it is not empty and both
+;; its left and right subtrees are (). The empty tree is not a leaf.
+(define (leaf? tree)
+  (and (not (null? tree))
+       (null? (node-left tree))
+       (null? (node-right tree))))
+
+;; (leaf-count-acc tree acc) -> number
+;; Recursive reading: returns acc plus the number of leaves in tree. For the empty
+;; tree () the answer is acc. For a leaf the answer is acc + 1. For any other node
+;; (v l r), count the leaves of r onto acc, then count the leaves of l onto that
+;; result. The left call is a tail call.
+(define (leaf-count-acc tree acc)
+  (cond ((null? tree) acc)
+        ((leaf? tree) (+ acc 1))
+        (else (leaf-count-acc (node-left tree)
+                              (leaf-count-acc (node-right tree) acc)))))
+
+;; (leaf-count tree) -> number
+;; Recursive reading: the number of leaves of a tree is leaf-count-acc starting
+;; from the count 0; for () that is 0.
+(define (leaf-count tree)
+  (leaf-count-acc tree 0))
