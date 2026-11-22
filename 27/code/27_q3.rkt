@@ -35,3 +35,21 @@
 ;; list; for () that is ().
 (define (tree-inorder tree)
   (inorder-acc tree '()))
+
+;; (preorder-acc tree acc) -> list
+;; Recursive reading: for the empty tree (), the result is acc unchanged. For
+;; (v l r), first compute the preorder of r onto acc, then the preorder of l onto
+;; that result, then cons v in front. Going right first, then left, then the node
+;; means the final list reads node, left, right without append.
+(define (preorder-acc tree acc)
+  (if (null? tree)
+      acc
+      (cons (node-value tree)
+            (preorder-acc (node-left tree)
+                          (preorder-acc (node-right tree) acc)))))
+
+;; (tree-preorder tree) -> list
+;; Recursive reading: the preorder list of a tree is its preorder-acc onto the
+;; empty list; for () that is ().
+(define (tree-preorder tree)
+  (preorder-acc tree '()))
