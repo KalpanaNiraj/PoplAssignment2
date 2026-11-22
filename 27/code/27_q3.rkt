@@ -93,3 +93,13 @@
   (newline)
   (display (tree-postorder tree))
   (newline))
+
+;; (tree-height tree) -> number
+;; Recursive reading: the height of the empty tree () is 0. The height of a node
+;; (v l r) is 1 plus the larger of the height of l and the height of r. So a
+;; single node (v () ()) has height 1 + max(0, 0) = 1.
+(define (tree-height tree)
+  (if (null? tree)
+      0
+      (+ 1 (max (tree-height (node-left tree))
+                (tree-height (node-right tree))))))
