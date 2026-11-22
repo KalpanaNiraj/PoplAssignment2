@@ -65,3 +65,13 @@ main :-
 %  Person = p(Name, Dept, Lang, Project); atoms are written without quotes.
 print_person(p(Name, Dept, Lang, Project)) :-
     format("~w = [~w, ~w, ~w]~n", [Name, Dept, Lang, Project]).
+
+%! count_solutions(+Active, -N) is det.
+%  Declarative reading: N is the number of candidate solutions Solution (as generated
+%  by candidate_solution/1) such that clue(C, Solution) holds for every clue number C
+%  in the list Active; clues not in Active are ignored.
+count_solutions(Active, N) :-
+    aggregate_all(count,
+                  ( candidate_solution(Solution),
+                    forall(member(C, Active), clue(C, Solution)) ),
+                  N).
