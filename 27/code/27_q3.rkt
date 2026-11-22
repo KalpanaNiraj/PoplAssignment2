@@ -128,3 +128,11 @@
 ;; from the count 0; for () that is 0.
 (define (leaf-count tree)
   (leaf-count-acc tree 0))
+
+;; (print-height-and-leaves tree) -> unspecified (prints)
+;; Recursive reading: not recursive itself; it builds the two-element list
+;; (height leaf-count) from the recursive tree-height and leaf-count, displays it,
+;; and prints exactly one newline. For the empty tree the list is (0 0).
+(define (print-height-and-leaves tree)
+  (display (list (tree-height tree) (leaf-count tree)))
+  (newline))
