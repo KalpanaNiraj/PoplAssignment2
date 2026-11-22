@@ -34,26 +34,6 @@
         (my-reverse acc)
         (loop (cdr rest) (cons (f (car rest)) acc)))))
 
-;; (insert-if-short x lst n) -> list
-;; Recursive reading: first process every element of lst with my-map. An
-;; element that is a list (() or a pair) is replaced by (insert-if-short x e n),
-;; and an atom is left unchanged. Then, if the length of the ORIGINAL lst is
-;; less than n, cons x onto the front of the processed list. () has length 0,
-;; so it becomes (x) exactly when 0 < n. The length is measured on lst, not on
-;; the processed list, so insertions never change which lists count as short.
-;; Recursion depth equals the nesting depth; the per-level list work is
-;; tail-recursive through my-length and my-map.
-(define (insert-if-short x lst n)
-  (let ((processed
-         (my-map (lambda (e)
-                   (if (or (null? e) (pair? e))
-                       (insert-if-short x e n)
-                       e))
-                 lst)))
-    (if (< (my-length lst) n)
-        (cons x processed)
-        processed)))
-
 ;; (print-insert-result) -> unspecified
 ;; Recursive reading: not recursive. Reads x, then lst, then n from standard
 ;; input (let* evaluates the three reads in this order), then displays
@@ -85,3 +65,12 @@
                     (cons x processed)
                     processed)))))
     go))
+
+;; (insert-if-short x lst n) -> list
+;; Recursive reading: builds the inserter (make-inserter x len-ok?) with
+;; len-ok? true exactly when a length k is less than n, and applies it to lst.
+;; The recursion over sublists, and the measurement of each list's ORIGINAL
+;; length before any insertion, are done by make-inserter, so this definition
+;; is not itself recursive.
+(define (insert-if-short x lst n)
+  ((make-inserter x (lambda (k) (< k n))) lst))
