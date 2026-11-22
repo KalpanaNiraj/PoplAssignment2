@@ -84,3 +84,22 @@ right_string(ParentPrec, Tree, String) :-
 %  precedence of Op; fails for a plain number.
 top_prec(bin(Op, _, _), Prec) :-
     op_prec(Op, Prec).
+
+%! equation(+List, -Equation) is nondet.
+%  Declarative reading: Equation is the string "L=R" where List splits into
+%  non-empty Left and Right, L is the canonical text of an expression tree over
+%  Left, R is that of an expression tree over Right, and both trees have the
+%  same integer value.
+equation(List, Equation) :-
+    split_nonempty(List, Left, Right),
+    expr(Left, LeftTree, Value),
+    expr(Right, RightTree, Value),
+    expr_string(LeftTree, LeftString),
+    expr_string(RightTree, RightString),
+    format(string(Equation), "~w=~w", [LeftString, RightString]).
+
+%! generate_equation(+List, -Equation) is semidet.
+%  Declarative reading: Equation is some valid equation string for List
+%  (see equation/2); fails if List admits no valid equation.
+generate_equation(List, Equation) :-
+    once(equation(List, Equation)).
