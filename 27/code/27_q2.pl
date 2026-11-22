@@ -13,3 +13,14 @@ split_nonempty([First|Rest], [First|Left], Right) :-
 split_nonempty_aux([Head|Tail], [], [Head|Tail]).
 split_nonempty_aux([Head|Tail], [Head|Left], Right) :-
     split_nonempty_aux(Tail, Left, Right).
+
+%! apply_op(?Op, +A, +B, -Value) is nondet.
+%  Declarative reading: Op is one of +, -, *, / and Value is the integer
+%  A Op B; for / the divisor B is non-zero and divides A exactly.
+apply_op(+, A, B, Value) :- Value is A + B.
+apply_op(-, A, B, Value) :- Value is A - B.
+apply_op(*, A, B, Value) :- Value is A * B.
+apply_op(/, A, B, Value) :-
+    B =\= 0,
+    A mod B =:= 0,
+    Value is A // B.
