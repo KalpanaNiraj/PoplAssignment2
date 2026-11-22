@@ -64,3 +64,24 @@
          (n (read)))
     (display (insert-if-short x lst n))
     (newline)))
+
+;; (make-inserter x len-ok?) -> (list -> list)
+;; Recursive reading: returns a function go of one list argument. go first
+;; processes every element of its list with my-map: an element that is a list
+;; (() or a pair) is replaced by (go e), and an atom is left unchanged. Then,
+;; if (len-ok? (my-length lst)) holds for the ORIGINAL list, x is consed onto
+;; the front of the processed list. go is bound with letrec so it can call
+;; itself on sublists; x and len-ok? are captured from the enclosing call.
+(define (make-inserter x len-ok?)
+  (letrec ((go
+            (lambda (lst)
+              (let ((processed
+                     (my-map (lambda (e)
+                               (if (or (null? e) (pair? e))
+                                   (go e)
+                                   e))
+                             lst)))
+                (if (len-ok? (my-length lst))
+                    (cons x processed)
+                    processed)))))
+    go))
