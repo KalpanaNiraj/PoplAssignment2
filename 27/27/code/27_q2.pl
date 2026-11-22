@@ -24,3 +24,14 @@ apply_op(/, A, B, Value) :-
     B =\= 0,
     A mod B =:= 0,
     Value is A // B.
+
+%! expr(+Numbers, -Tree, -Value) is nondet.
+%  Declarative reading: Tree is an expression tree whose leaves, read left to
+%  right, are exactly Numbers (non-empty), every division inside Tree is exact
+%  with non-zero divisor, and Value is the integer value of Tree.
+expr([N], N, N).
+expr(Numbers, bin(Op, LeftTree, RightTree), Value) :-
+    split_nonempty(Numbers, Left, Right),
+    expr(Left, LeftTree, LeftValue),
+    expr(Right, RightTree, RightValue),
+    apply_op(Op, LeftValue, RightValue, Value).
